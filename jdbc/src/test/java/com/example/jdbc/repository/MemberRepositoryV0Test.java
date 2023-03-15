@@ -61,5 +61,22 @@ class MemberRepositoryV0Test {
 		assertThat( result).isNotNull();
 		assertThatThrownBy(() -> repository.findById("mermer9")).isInstanceOf(NoSuchElementException.class);
 	}
+	
+	@Test
+	void crud() throws SQLException {
+		Member member = new Member("mermer9", 3000);
+		Member result = repository.save(member);
+		assertThat( result).isNotNull();
+		assertThat( repository.findById("meremr")).isNotNull();
+		
+		member = new Member("mermer9", 6000);
+		result = repository.update(member);
+		assertThat( result).isNotNull();
+		assertThat( result.getMoney()).isEqualTo(6000);
+		
+		result = repository.delete(member);
+		assertThat( result).isNotNull();
+		assertThatThrownBy(() -> repository.findById("mermer9")).isInstanceOf(NoSuchElementException.class);
+	}
 
 }
