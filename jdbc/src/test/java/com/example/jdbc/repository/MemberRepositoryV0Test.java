@@ -1,10 +1,16 @@
 package com.example.jdbc.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.jdbc.domain.Member;
 
@@ -19,14 +25,41 @@ import com.example.jdbc.domain.Member;
  * @desc    : 
  * @version : x.x
  */
+@Transactional
+@Rollback
 class MemberRepositoryV0Test {
 
 	MemberRepositoryV0 repository = new MemberRepositoryV0();
 	
 	@Test
-	void crud() throws SQLException {
-		Member member = new Member("meremr", 3000);
+	@Transactional
+	void insert() throws SQLException {
+		Member member = new Member("mermer9", 3000);
 		repository.save(member);
+	}
+	
+	@Test
+	@Transactional(readOnly = true)
+	void select() throws SQLException {
+		assertThat( repository.findById("meremr")).isNotNull();
+	}
+	
+	@Test
+	@Transactional(readOnly = true)
+	void update() throws SQLException {
+		Member member = new Member("mermer9", 6000);
+		Member result = repository.update(member);
+		assertThat( result).isNotNull();
+		assertThat( result.getMoney()).isEqualTo(6000);
+	}
+	
+	@Test
+	@Transactional(readOnly = true)
+	void delete() throws SQLException {
+		Member member = new Member("mermer9", 6000);
+		Member result = repository.delete(member);
+		assertThat( result).isNotNull();
+		assertThatThrownBy(() -> repository.findById("mermer9")).isInstanceOf(NoSuchElementException.class);
 	}
 
 }
