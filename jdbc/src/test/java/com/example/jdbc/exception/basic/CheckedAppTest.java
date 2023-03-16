@@ -27,15 +27,15 @@ public class CheckedAppTest {
 	
 	static class RuntimeSqlException extends RuntimeException{
 		private static final long serialVersionUID = 8684936731050520971L;
-		public RuntimeSqlException(String message) {
-			super(message);
+		public RuntimeSqlException(Exception e) {
+			super(e);
 		}
 	}
 	
 	static class RuntimeConnectionException extends RuntimeException{
 		private static final long serialVersionUID = 2217413399456712499L;
-		public RuntimeConnectionException(String message) {
-			super(message);
+		public RuntimeConnectionException(Exception e) {
+			super(e);
 		}
 	}
 
@@ -65,13 +65,13 @@ public class CheckedAppTest {
 
 	static class Repository{
 		public void call() {
-			throw new RuntimeSqlException("쿼리 syntax 에러");
+			throw new RuntimeSqlException(new SQLException());
 		}
 	}
 	
 	static class NetworkClient {
 		public void call() {
-			throw new RuntimeConnectionException("연결실패");
+			throw new RuntimeConnectionException(new ConnectException());
 		}
 	}
 	
