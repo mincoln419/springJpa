@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.stereotype.Repository;
 
 import com.example.jdbc.connection.DBConnectionUtil;
 import com.example.jdbc.domain.Member;
