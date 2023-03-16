@@ -104,18 +104,18 @@ public class MemberRepositoryV1 {
 			close(con, pstmt, null);
 		}
 	}
-	public Member delete(Member member) throws SQLException {
+	public int delete(String memberId) throws SQLException {
 		String sql = "delete from member where member_id=?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		con = getConnection();
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, member.getMemeberId());
+			pstmt.setString(1, memberId);
 			
 			int result = pstmt.executeUpdate();
 			log.info("resultSize : {}", result);
-			return member;
+			return result;
 		} catch (SQLException e) {
 			log.debug(e.getMessage());
 			throw e;
@@ -136,5 +136,28 @@ public class MemberRepositoryV1 {
 		JdbcUtils.closeResultSet(rs);
 		JdbcUtils.closeStatement(stmt);
 		JdbcUtils.closeConnection(con);
+	}
+
+	/**
+	 * <pre>
+	 * 1. 개요 : 
+	 * 2. 처리내용 : 
+	 * </pre>
+	 * @Method Name : update
+	 * @date : 2023. 3. 16.
+	 * @author : minco
+	 * @throws SQLException 
+	 * @history :
+	 * ----------------------------------------------------------------------------------
+	 * 변경일                        작성자                              변경내역
+	 * -------------- -------------- ----------------------------------------------------
+	 * 2023. 3. 16.  minco       최초작성
+	 * ----------------------------------------------------------------------------------
+	 */
+	public void update(String memberId, int money) throws SQLException {
+		Member member = new Member();
+		member.setMemeberId(memberId);
+		member.setMoney(money);
+		update(member);
 	}
 }

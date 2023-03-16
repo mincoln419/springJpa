@@ -74,7 +74,7 @@ class MemberRepositoryV1Test {
 	@Transactional(readOnly = true)
 	void delete() throws SQLException {
 		Member member = new Member("mermer9", 6000);
-		Member result = repository.delete(member);
+		int result = repository.delete("mermer9");
 		assertThat( result).isNotNull();
 		assertThatThrownBy(() -> repository.findById("mermer9")).isInstanceOf(NoSuchElementException.class);
 	}
@@ -91,8 +91,8 @@ class MemberRepositoryV1Test {
 		assertThat( result).isNotNull();
 		assertThat( result.getMoney()).isEqualTo(6000);
 		
-		result = repository.delete(member);
-		assertThat( result).isNotNull();
+		;
+		assertThat( repository.delete("mermer9")).isGreaterThan(0);
 		assertThatThrownBy(() -> repository.findById("mermer9")).isInstanceOf(NoSuchElementException.class);
 		
 		Thread.sleep(1000L);
