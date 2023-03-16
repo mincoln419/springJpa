@@ -42,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @SpringBootTest
 @Slf4j
-class MemberServiceV3_3Test {
+class MemberServiceV4Test {
 
 	@Autowired
 	MemberRepositoryV3 repository;
@@ -58,23 +58,19 @@ class MemberServiceV3_3Test {
 	@TestConfiguration
 	static class TestConfig{
 		
-		private final DataSource dataSource;
-		
-		/**
-		 * @param dataSource
-		 */
-		public TestConfig(DataSource dataSource) {
-			this.dataSource = dataSource;
+		@Bean
+		DataSource dataSource() {
+			return new DriverManagerDataSource(URL, USERNAME, PASSWORD);
 		}
-
+		
 		@Bean
 		PlatformTransactionManager transactionManager() {
-			return new DataSourceTransactionManager(dataSource);
+			return new DataSourceTransactionManager(dataSource());
 		}
 		
 		@Bean
 		MemberRepositoryV3 memberRepositoryV3() {
-			return new MemberRepositoryV3(dataSource);
+			return new MemberRepositoryV3(dataSource());
 		}
 		
 	}
