@@ -24,7 +24,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.example.jdbc.domain.Member;
+import com.example.jdbc.repository.MemberRepository;
 import com.example.jdbc.repository.MemberRepositoryV3;
+import com.example.jdbc.repository.MemberRepositoryV4;
 import com.zaxxer.hikari.HikariDataSource;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,10 +47,10 @@ import lombok.extern.slf4j.Slf4j;
 class MemberServiceV4Test {
 
 	@Autowired
-	MemberRepositoryV3 repository;
+	MemberRepository repository;
 	
 	@Autowired
-	MemberServiceV3_3 memberServiceV3_3;
+	MemberServiceV4 memberServiceV4;
 	
 	String MEMBER_A;
 	String MEMBER_B;
@@ -69,8 +71,8 @@ class MemberServiceV4Test {
 		}
 		
 		@Bean
-		MemberRepositoryV3 memberRepositoryV3() {
-			return new MemberRepositoryV3(dataSource());
+		MemberRepository memberRepository() {
+			return new MemberRepositoryV4(dataSource());
 		}
 		
 	}
@@ -92,7 +94,7 @@ class MemberServiceV4Test {
 		repository.save(A);
 		repository.save(B);
 		//when
-		memberServiceV3_3.accountTransfer(MEMBER_A, MEMBER_B, 1000);
+		memberServiceV4.accountTransfer(MEMBER_A, MEMBER_B, 1000);
 		
 		Member fromMember = repository.findById(MEMBER_A);
 		Member toMember = repository.findById(MEMBER_B);
@@ -113,7 +115,7 @@ class MemberServiceV4Test {
 		repository.save(B);
 	
 		//when
-		assertThatThrownBy(() -> memberServiceV3_3.accountTransfer(MEMBER_A, MEMBER_B, 1000)).isInstanceOf(IllegalStateException.class);
+		assertThatThrownBy(() -> memberServiceV4.accountTransfer(MEMBER_A, MEMBER_B, 1000)).isInstanceOf(IllegalStateException.class);
 		
 		//then
 		Member fromMember = repository.findById(MEMBER_A);
@@ -125,10 +127,10 @@ class MemberServiceV4Test {
 	
 	@Test
 	void appCheck() {
-		log.info("memberService class={}", memberServiceV3_3.getClass());
+		log.info("memberService class={}", memberServiceV4.getClass());
 		log.info("memberRepository class={}", repository.getClass());
 		
-		assertThat(AopUtils.isAopProxy(memberServiceV3_3)).isTrue();
+		assertThat(AopUtils.isAopProxy(memberServiceV4)).isTrue();
 		assertThat(AopUtils.isAopProxy(repository)).isFalse();//AOP 관련 소스가 없기 때문에 proxy 객체로 만들지 않음
 	}
 

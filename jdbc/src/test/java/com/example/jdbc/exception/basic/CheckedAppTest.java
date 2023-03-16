@@ -7,8 +7,6 @@ import java.sql.SQLException;
 
 import org.junit.jupiter.api.Test;
 
-import com.example.jdbc.exception.basic.UnCheckedAppTest.Controller;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**

@@ -1,14 +1,10 @@
 package com.example.jdbc.service;
 
-import java.sql.SQLException;
-
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import com.example.jdbc.domain.Member;
-import com.example.jdbc.repository.MemberRepositoryV3;
+import com.example.jdbc.repository.MemberRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,25 +16,26 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author  : minco
  * @date    : 2023. 3. 16. 오전 10:32:50
- * @desc    : 트랜잭션 - @Transactional AOP
+ * @desc    : 트랜잭션 - @Transactional AOP - SQL Exception 제거, MemberRepository 인터페이스 사용
  * @version : x.x
  */
 @Slf4j
-public class MemberServiceV3_3 {
+@Service
+public class MemberServiceV4 {
 
-	private final MemberRepositoryV3 memberRepository;
+	private final MemberRepository memberRepository;
 	
 	
 	/**
 	 * @param transactionTemplate
 	 * @param memberRepository
 	 */
-	public MemberServiceV3_3( MemberRepositoryV3 memberRepository) {
+	public MemberServiceV4( MemberRepository memberRepository) {
 		this.memberRepository = memberRepository;
 	}
 
 	@Transactional
-	public void accountTransfer(String fromId, String toId, int money) throws SQLException {
+	public void accountTransfer(String fromId, String toId, int money) {
 		bizProcess(fromId, toId, money);
 	}
 
@@ -57,7 +54,7 @@ public class MemberServiceV3_3 {
 	 * 2023. 3. 16.  minco       최초작성
 	 * ----------------------------------------------------------------------------------
 	 */
-	private void bizProcess(String fromId, String toId, int money) throws SQLException {
+	private void bizProcess(String fromId, String toId, int money) {
 		Member fromMember =  memberRepository.findById(fromId);
 		Member toMember =  memberRepository.findById(toId);
 		
