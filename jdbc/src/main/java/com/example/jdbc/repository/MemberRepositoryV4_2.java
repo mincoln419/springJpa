@@ -46,7 +46,7 @@ public class MemberRepositoryV4_2 implements MemberRepository{
 	 * @param dataSource
 	 * @param exceptionTranslator
 	 */
-	public MemberRepositoryV4_2(DataSource dataSource, SQLExceptionTranslator exceptionTranslator) {
+	public MemberRepositoryV4_2(DataSource dataSource) {
 		this.dataSource = dataSource;
 		this.exceptionTranslator = new SQLErrorCodeSQLExceptionTranslator(dataSource);
 	}
@@ -73,7 +73,7 @@ public class MemberRepositoryV4_2 implements MemberRepository{
 	}
 	
 	public Member findById(String memberId) {
-		String sql = "select * from member where member_id = ?";
+		String sql = "select * from memberxzczxc where member_id = ?";
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
