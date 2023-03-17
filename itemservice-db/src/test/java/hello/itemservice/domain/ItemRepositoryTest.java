@@ -50,7 +50,6 @@ class ItemRepositoryTest {
     }
 
     @Test
-    @Commit
     void save() {
         //given
         Item item = new Item("itemA", 10000, 10);
