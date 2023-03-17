@@ -7,10 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.NoSuchElementException;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
 
 import com.example.jdbc.domain.Member;
 import com.example.jdbc.repository.ex.MyDbException;
@@ -26,16 +29,28 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author  : minco
  * @date    : 2023. 3. 15. 오후 4:02:08
- * @desc    : 예외 누수 문제 해결, 체크 예외 -> 런타임으로 변경 , Member repository 인터페이스 사용, throws SqlException 제거
+ * @desc    : exception translator 추가
  * 
  * @version : x.x
  */
 @Slf4j
-@AllArgsConstructor
-public class MemberRepositoryV4 implements MemberRepository{
+public class MemberRepositoryV4_2 implements MemberRepository{
 	
 	private final DataSource dataSource;
 	
+	private final SQLExceptionTranslator exceptionTranslator;
+	
+	
+	
+	/**
+	 * @param dataSource
+	 * @param exceptionTranslator
+	 */
+	public MemberRepositoryV4_2(DataSource dataSource, SQLExceptionTranslator exceptionTranslator) {
+		this.dataSource = dataSource;
+		this.exceptionTranslator = new SQLErrorCodeSQLExceptionTranslator(dataSource);
+	}
+
 	public Member save(Member member) {
 		String sql = "insert into member(member_id, money) values (?, ?)";
 		Connection con = null;
@@ -51,7 +66,7 @@ public class MemberRepositoryV4 implements MemberRepository{
 			return member;
 		} catch (SQLException e) {
 			log.debug(e.getMessage());
-			throw new MyDbException(e);
+			throw exceptionTranslator.translate("save", sql, e);
 		}finally {
 			close(con, pstmt, null);
 		}
@@ -79,8 +94,7 @@ public class MemberRepositoryV4 implements MemberRepository{
 			}
 			
 		} catch (SQLException e) {
-			log.debug(e.getMessage());
-			throw new MyDbException(e);
+			throw exceptionTranslator.translate("findById", sql, e);
 		}finally {
 			close(con, pstmt, result);
 		}
@@ -100,8 +114,7 @@ public class MemberRepositoryV4 implements MemberRepository{
 			log.info("resultSize : {}", result);
 			return new Member(memberId, money);
 		} catch (SQLException e) {
-			log.debug(e.getMessage());
-			throw new MyDbException(e);
+			throw exceptionTranslator.translate("update", sql, e);
 		}finally {
 			close(con, pstmt, null);
 		}
@@ -121,8 +134,7 @@ public class MemberRepositoryV4 implements MemberRepository{
 			log.info("resultSize : {}", result);
 			return result;
 		} catch (SQLException e) {
-			log.debug(e.getMessage());
-			throw new MyDbException(e);
+			throw exceptionTranslator.translate("delete", sql, e);
 		}finally {
 			close(con, pstmt, null);
 			JdbcUtils.closeConnection(con);

@@ -26,7 +26,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.example.jdbc.domain.Member;
 import com.example.jdbc.repository.MemberRepository;
 import com.example.jdbc.repository.MemberRepositoryV3;
-import com.example.jdbc.repository.MemberRepositoryV4;
+import com.example.jdbc.repository.MemberRepositoryV4_1;
 import com.zaxxer.hikari.HikariDataSource;
 
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +72,7 @@ class MemberServiceV4Test {
 		
 		@Bean
 		MemberRepository memberRepository() {
-			return new MemberRepositoryV4(dataSource());
+			return new MemberRepositoryV4_1(dataSource());
 		}
 		
 	}
