@@ -8,12 +8,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@TestPropertySource("classpath:/dev_application.properties")
 class ItemRepositoryTest {
 
     @Autowired
@@ -75,7 +78,7 @@ class ItemRepositoryTest {
 
         //itemName 검증
         test("itemA", null, item1, item2);
-        test("temA", null, item1, item2);
+        test("itemA", null, item1, item2);
         test("itemB", null, item3);
 
         //maxPrice 검증
