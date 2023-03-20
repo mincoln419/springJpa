@@ -1,5 +1,7 @@
 package hello.itemservice.repository.jpa;
 
+import static hello.itemservice.domain.QItem.item;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,12 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import hello.itemservice.domain.Item;
-import static hello.itemservice.domain.QItem.item;
 import hello.itemservice.repository.ItemRepository;
 import hello.itemservice.repository.ItemSearchCond;
 import hello.itemservice.repository.ItemUpdateDto;
