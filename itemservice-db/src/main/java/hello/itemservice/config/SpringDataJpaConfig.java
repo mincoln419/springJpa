@@ -7,24 +7,37 @@ import org.springframework.context.annotation.Configuration;
 
 import hello.itemservice.repository.ItemRepository;
 import hello.itemservice.repository.jpa.JpaItemRepositoryV1;
+import hello.itemservice.repository.jpa.JpaItemRepositoryV2;
+import hello.itemservice.repository.jpa.SpringDatajpaItemRepository;
 import hello.itemservice.service.ItemService;
 import hello.itemservice.service.ItemServiceV1;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * <pre>
+ * hello.itemservice.config
+ * SpringDataJpaConfig.java
+ * </pre>
+ *
+ * @author  : minco
+ * @date    : 2023. 3. 20. 오전 10:13:18
+ * @desc    : 
+ * @version : x.x
+ */
 @Configuration
 @RequiredArgsConstructor
-public class JpaConfig {
+public class SpringDataJpaConfig {
 
-	private final EntityManager em;
+	private final SpringDatajpaItemRepository datajpaItemRepository;
 	
-    @Bean
+	@Bean
     public ItemService itemService() {
     	return new ItemServiceV1(itemRepository());
     }
 
     @Bean
     public ItemRepository itemRepository() {
-    	return new JpaItemRepositoryV1(em);
+    	return new JpaItemRepositoryV2(datajpaItemRepository);
     }
 
 }

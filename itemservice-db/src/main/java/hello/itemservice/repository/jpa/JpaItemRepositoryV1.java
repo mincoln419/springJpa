@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Repository
 @Transactional
 @AllArgsConstructor
-public class JpaItemRepository implements ItemRepository {
+public class JpaItemRepositoryV1 implements ItemRepository {
 	
 	private final EntityManager em;
 	
